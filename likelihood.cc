@@ -70,9 +70,9 @@ int main() {
     }
     cout << "uncertainty: " << (daten1[daten1.size()-1]-daten1[0])/2<< endl;
 
-    double lambda = prob(daten, mu1)/prob2(daten);
+    double lambda = likelihood / prob2(daten);
 
-    cout << "Lambda: " << lambda << endl;
+    cout << "Lambda: " << -2*log(lambda) << endl;
     
     int n = 233;
     double z = (-2*log(lambda)-n)/(sqrt(2*n));
