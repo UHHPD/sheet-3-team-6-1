@@ -23,6 +23,14 @@ double prob(vector<int> daten, double mu) {
   return product;
 }
 
+double prob2(vector<int> daten) {
+  double product = 1;
+  for(int i = 0 ; i < daten.size() ; ++i) {
+        product = product * poisson(daten[i], daten[i]);
+    }
+  return product;
+}
+
 
 int main() {
     using namespace std;
@@ -36,11 +44,12 @@ int main() {
         daten.push_back(n_i);
     }
 
-    
     double likelihood = prob(daten, mu1);
     
     cout << likelihood << endl; 
-
+    
+    vector<double> daten1;
+    
     for(double i=0; i<=600; i++) { 
       double x = i/100;
       fout << x << " " << prob(daten, x) << endl;
@@ -53,12 +62,23 @@ int main() {
       fout3 << x << " " << -2*log(prob(daten, x))+2*log(prob(daten, mu1)) << endl;
 
       x1 = -2*log(prob(daten, x)/prob(daten, 3.12));
-      if (x1<1.0) {
-        fout4 << x1 << endl;
-      }
 
+      if (x1<1.0) {
+        daten1.push_back(x);
+        fout4 << x <<" " << x1 << endl;
+      }
     }
+    cout << "uncertainty: " << (daten1[daten1.size()-1]-daten1[0])/2<< endl;
+
+    double lambda = prob(daten, mu1)/prob2(daten);
+
+    cout << "Lambda: " << lambda << endl;
     
+    int n = 233;
+    double z = (-2*log(lambda)-n)/(sqrt(2*n));
+
+    cout << "Deviation z: " << z << endl;
+
     fin.close();
     fout.close();
     fout2.close();
